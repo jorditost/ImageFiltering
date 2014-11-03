@@ -8,7 +8,7 @@ This repository contains a set of examples and tests for image filtering using [
 
 The following sketch should help us to filter the source image for blob detection. It requires the [controlP5](http://www.sojamo.de/libraries/controlP5/) library.
 
-Code: [ImageFiltering.pde](https://github.com/jorditost/ImageFiltering/ImageFiltering/ImageFiltering.pde)
+Code: [ImageFiltering.pde](https://github.com/jorditost/ImageFiltering/blob/master/ImageFiltering/ImageFiltering.pde)
 
 The sketch is doing the following:
 
