@@ -1,9 +1,7 @@
 Image Filtering
 =================
 
-This repository will contain a set of examples and tests to filter a video source using [Processing](http://processing.org) and [OpenCV](http://opencv.org/).
-
-This code uses the [OpenCV library for Processing](https://github.com/atduskgreg/opencv-processing) by Greg Borenstein.
+This repository contains a set of examples and tests for image filtering using [Processing](http://processing.org) and the [OpenCV library for Processing](https://github.com/atduskgreg/opencv-processing) by Greg Borenstein.
 
 
 ##Filtering the image for blob detection
