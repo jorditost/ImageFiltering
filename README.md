@@ -36,13 +36,13 @@ Just open the sketch and do some tests ;)
 
 Simple color tracking based on the hue channel.
 
-Code: [HSVColorTracking.pde](https://github.com/jorditost/ImageFiltering/HSVColorTracking/HSVColorTracking.pde)
+Code: [HSVColorTracking.pde](https://github.com/jorditost/ImageFiltering/tree/master/HSVColorTracking/HSVColorTracking.pde)
 
 ![](HSVColorTracking/screenshots/hsv_color_tracking.png)
 
 For color tracking with multiple colors, check this sketch:
 
-Code: [MultipleColorTracking.pde](https://github.com/jorditost/ImageFiltering//MultipleColorTracking/MultipleColorTracking.pde)
+Code: [MultipleColorTracking.pde](https://github.com/jorditost/ImageFiltering/tree/master/MultipleColorTracking/MultipleColorTracking.pde)
 
 ![](MultipleColorTracking/screenshots/multiple_color_tracking.png)
 
