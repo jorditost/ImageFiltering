@@ -29,15 +29,17 @@ import controlP5.*;
 // Image source
 static int IMAGE_SRC = 0;
 static int CAPTURE   = 1;
-static int KINECT    = 2;
-int source = IMAGE_SRC;
+static int VIDEO     = 2;
+static int KINECT    = 3;
+int source = VIDEO;
 
 public static final int GRAY = 0;
 public static final int S    = 1;
 public static final int LUMA = 2;
 
 OpenCV opencv;
-Capture video;
+Capture cam;
+Movie video;
 SimpleOpenNI kinect;
 PImage src, preProcessedImage, processedImage, contoursImage;
 
@@ -84,9 +86,16 @@ void setup() {
   // CAPTURE
   } else if (source == CAPTURE) {
     printCameras();
-    video = new Capture(this, 640, 480, "USB 2.0 Camera");
-    video.start();
-    opencv = new OpenCV(this, video.width, video.height);
+    cam = new Capture(this, 640, 480, "USB 2.0 Camera");
+    cam.start();
+    opencv = new OpenCV(this, cam.width, cam.height);
+  
+  // VIDEO
+  } else if (source == VIDEO) {
+    video = new Movie(this, "slime1.mov");
+    video.loop();
+    video.play();
+    opencv = new OpenCV(this, 640, 480);
   
   // KINECT
   } else if (source == KINECT) {
@@ -119,7 +128,17 @@ void draw() {
     //opencv.loadImage(src);
   
   // CAPTURE
-  } else if (source == CAPTURE && video != null) {
+  } else if (source == CAPTURE && cam != null) {
+    if (cam.available()) {
+      cam.read();
+    }
+    
+    // Load the new frame of our camera in to OpenCV
+    opencv.loadImage(cam);
+    src = opencv.getSnapshot();
+    
+  // MOVIE
+  } else if (source == VIDEO && video != null) {
     if (video.available()) {
       video.read();
     }
