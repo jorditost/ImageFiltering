@@ -4,7 +4,8 @@
  * Based on this example by Daniel Shiffman:
  * http://shiffman.net/2011/04/26/opencv-matching-faces-over-time/
  * 
- * @author: Jordi Tost (@jorditost)
+ * @author: Jordi Tost @jorditost
+ * @modified: 06/10/2014
  * 
  * University of Applied Sciences Potsdam, 2014
  */
@@ -23,7 +24,7 @@ class Blob {
   public boolean delete;
   
   // How long should I live if I have disappeared?
-  private int initTimer = 5; //127;
+  private int persistence = 5; //127;
   public int timer;
   
   // Unique ID for each blob
@@ -38,14 +39,14 @@ class Blob {
     available = true;
     delete = false;
     
-    timer = initTimer;
+    timer = persistence;
   }
   
   // Show me
   void display() {
     Rectangle r = contour.getBoundingBox();
     
-    float opacity = map(timer, 0, initTimer, 0, 127);
+    float opacity = map(timer, 0, persistence, 0, 127);
     fill(0,0,255,opacity);
     stroke(0,0,255);
     rect(r.x, r.y, r.width, r.height);
@@ -69,7 +70,7 @@ class Blob {
     }
     contour.loadPoints(inputPoints);*/
     
-    timer = initTimer;
+    timer = persistence;
   }
 
   // Count me down, I am gone

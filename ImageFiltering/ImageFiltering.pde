@@ -1,13 +1,16 @@
 /**
- * Image Filtering
+ * ImageFiltering
  * This sketch will help us to adjust the filter values to optimize blob detection
  *
  * It uses the OpenCV for Processing library by Greg Borenstein
  * https://github.com/atduskgreg/opencv-processing
  * 
- * @author: Jordi Tost @jorditost
- * @modified: 26/09/2014
- * 
+ * @author: Jordi Tost (@jorditost)
+ *
+ * Versions with blob persistence here: 
+ * https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringWithBlobPersistence
+ * https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringWithBlobPersistenceAdvanced
+ *
  * University of Applied Sciences Potsdam, 2014
  */
  
@@ -39,7 +42,6 @@ void setup() {
   frameRate(15);
   
   video = new Capture(this, 640, 480);
-  //video = new Capture(this, 640, 480, "USB2.0 PC CAMERA");
   video.start();
   
   opencv = new OpenCV(this, 640, 480);

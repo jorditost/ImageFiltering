@@ -5,17 +5,14 @@
  * It uses the OpenCV for Processing library by Greg Borenstein
  * https://github.com/atduskgreg/opencv-processing
  *
- * @author: Jordi Tost
- * @updated: 06/10/2014
- * 
- * University of Applied Sciences Potsdam, 2014
+ * @author: Jordi Tost (@jorditost)
+ * @url: https://github.com/jorditost/ImageFiltering/tree/master/MultipleColorTracking
  *
+ * University of Applied Sciences Potsdam, 2014
  *
  * Instructions:
  * Press one numerical key [1-4] and click on one color to track it
  */
- 
- 
  
 import gab.opencv.*;
 import processing.video.*;
@@ -45,13 +42,8 @@ void setup() {
   size(opencv.width + opencv.width/4 + 30, opencv.height, P2D);
   
   // Array for detection colors
-  //colors = new ArrayList<Integer>();
   colors = new int[maxColors];
   hues = new int[maxColors];
-  //hues[0] = 155;
-  //hues[1] = 155;
-  //hues[2] = 155;
-  //hues[3] = 155;
   
   outputs = new PImage[maxColors];
   
@@ -136,15 +128,12 @@ void detectColors() {
     
     // <6> Save the processed image for reference.
     outputs[i] = opencv.getSnapshot();
-    
-    // <7> Find contours in our range image.
-    //     Passing 'true' sorts them by descending area.
-    //contours = opencv.findContours(true,true);
   }
   
+  // <7> Find contours in our range image.
+  //     Passing 'true' sorts them by descending area.
   if (outputs[0] != null) {
     
-    println("hey");
     opencv.loadImage(outputs[0]);
     contours = opencv.findContours(true,true);
   }
@@ -152,14 +141,12 @@ void detectColors() {
 
 void displayContoursBoundingBoxes() {
   
-  println("display");
   for (int i=0; i<contours.size(); i++) {
     
     Contour contour = contours.get(i);
     Rectangle r = contour.getBoundingBox();
     
-    if (//(contour.area() > 0.9 * src.width * src.height) ||
-        (r.width < 20 || r.height < 20))
+    if (r.width < 20 || r.height < 20)
       continue;
     
     stroke(255, 0, 0);
@@ -186,7 +173,6 @@ void mousePressed() {
     hues[colorToChange-1] = hue;
     
     println("color index " + (colorToChange-1) + ", value: " + hue);
-    //hues.add(hue);
   }
 }
 
