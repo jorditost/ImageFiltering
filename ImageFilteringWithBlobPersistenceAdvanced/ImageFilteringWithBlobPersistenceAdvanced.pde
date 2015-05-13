@@ -125,7 +125,7 @@ void draw() {
   // IMAGE
   if (source == IMAGE_SRC) {
     
-    //opencv.loadImage(src);
+    opencv.loadImage(src);
   
   // CAPTURE
   } else if (source == CAPTURE && cam != null) {
@@ -135,6 +135,7 @@ void draw() {
     
     // Load the new frame of our camera in to OpenCV
     opencv.loadImage(cam);
+    opencv.useColor();
     src = opencv.getSnapshot();
     
   // MOVIE
@@ -145,6 +146,7 @@ void draw() {
     
     // Load the new frame of our camera in to OpenCV
     opencv.loadImage(video);
+    opencv.useColor();
     src = opencv.getSnapshot();
   
   // KINECT
@@ -153,6 +155,7 @@ void draw() {
     
     // Load the new frame of our camera in to OpenCV
     opencv.loadImage(kinect.rgbImage());
+    opencv.useColor();
     src = opencv.getSnapshot();
   }
   

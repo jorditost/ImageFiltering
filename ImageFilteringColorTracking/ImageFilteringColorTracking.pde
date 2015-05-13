@@ -26,7 +26,7 @@ import controlP5.*;
 static int IMAGE_SRC = 0;
 static int CAPTURE   = 1;
 static int KINECT    = 2;
-int source = IMAGE_SRC;
+int source = CAPTURE;
 
 public static final int GRAY = 0;
 public static final int S    = 1;
@@ -83,7 +83,7 @@ void setup() {
   // CAPTURE
   } else if (source == CAPTURE) {
     printCameras();
-    video = new Capture(this, 640, 480, "USB 2.0 Camera");
+    video = new Capture(this, 640, 480);
     video.start();
     opencv = new OpenCV(this, video.width, video.height);
   
@@ -125,6 +125,7 @@ void draw() {
     
     // Load the new frame of our camera in to OpenCV
     opencv.loadImage(video);
+    opencv.useColor();
     src = opencv.getSnapshot();
   
   // KINECT
@@ -133,6 +134,7 @@ void draw() {
     
     // Load the new frame of our camera in to OpenCV
     opencv.loadImage(kinect.rgbImage());
+    opencv.useColor();
     src = opencv.getSnapshot();
   }
   
