@@ -77,7 +77,7 @@ void setup() {
   
   // IMAGE_SRC
   if (source == IMAGE_SRC) {
-    src = loadImage("data/after4.jpg");
+    src = loadImage("data/stage-640x480.jpg");
     opencv = new OpenCV(this, src);
     
   // CAPTURE

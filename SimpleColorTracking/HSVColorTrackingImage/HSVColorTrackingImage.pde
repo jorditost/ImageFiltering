@@ -19,7 +19,7 @@ int rangeLow = 150;
 int rangeHigh = 160;
 
 void setup() {
-  img = loadImage("after4.jpg");
+  img = loadImage("stage-640x480.jpg");
   opencv = new OpenCV(this, img);
   size(opencv.width, opencv.height, P2D);
   opencv.useColor(HSB);

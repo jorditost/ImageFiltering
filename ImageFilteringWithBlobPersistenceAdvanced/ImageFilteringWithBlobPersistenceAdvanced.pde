@@ -17,6 +17,10 @@
  */
  
 import gab.opencv.*;
+// Import the OpenCV Improc class,
+// it has the cvtColor() function we need.
+import org.opencv.imgproc.Imgproc;
+
 import java.awt.Rectangle;
 import processing.video.*;
 import SimpleOpenNI.*;
@@ -30,6 +34,7 @@ int source = IMAGE_SRC;
 
 public static final int GRAY = 0;
 public static final int S    = 1;
+public static final int LUMA = 2;
 
 OpenCV opencv;
 Capture video;
@@ -111,7 +116,7 @@ void draw() {
   // IMAGE
   if (source == IMAGE_SRC) {
     
-    opencv.loadImage(src);
+    //opencv.loadImage(src);
   
   // CAPTURE
   } else if (source == CAPTURE && video != null) {
@@ -176,6 +181,11 @@ void detect() {
   if (channel == S) {
     opencv.useColor(HSB);
     opencv.setGray(opencv.getS().clone());
+  } else if (channel == LUMA) {
+    Imgproc.cvtColor(opencv.getColor(), opencv.getColor(), Imgproc.COLOR_BGR2Lab);
+    // Since the channels start out in the order BGRA,
+    // Converting to LAB will put the Luma in the B channel
+    opencv.setGray(opencv.getB());
   } else {
     opencv.gray();
   }
@@ -212,7 +222,7 @@ void detect() {
   }
 
   // Invert (black bg, white blobs)
-  if (channel == GRAY) {
+  if (channel == GRAY || channel == LUMA) {
     opencv.invert();
   }
   
@@ -442,6 +452,7 @@ void initControls() {
      .setSpacingColumn(50)
      .addItem("GRAY", GRAY)
      .addItem("SATURATION", S)
+     //.addItem("LUMA", LUMA)
      .activate(S)
      ;
   
