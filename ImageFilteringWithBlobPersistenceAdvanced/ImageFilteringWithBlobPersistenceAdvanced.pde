@@ -56,6 +56,8 @@ int blobCount = 0;
 
 // Detection params
 int channel = S;
+boolean useBackgroundSubtraction = false;
+boolean backgroundSubtractionInitialized = false;
 float contrast = 1;
 int brightness = 0;
 int threshold = 75;
@@ -103,6 +105,10 @@ void setup() {
     kinect.enableRGB();
     opencv = new OpenCV(this, 640, 480);
   }
+  
+  /*if (useBackgroundSubtraction) {
+    opencv.startBackgroundSubtraction(5, 3, 0.5);
+  }*/
   
   contours = new ArrayList<Contour>();
   
@@ -159,6 +165,7 @@ void draw() {
     src = opencv.getSnapshot();
   }
   
+  // CV detection
   detect();
   
   // Draw
@@ -212,6 +219,16 @@ void detect() {
     opencv.gray();
   }
   
+  // Background subtraction
+  if (useBackgroundSubtraction) {
+    if (!backgroundSubtractionInitialized) {
+      opencv.startBackgroundSubtraction(5, 3, 0.5);
+      backgroundSubtractionInitialized = true;
+    }
+    opencv.updateBackground();
+  }
+  
+  // Pre-process image
   if (brightness > 0) {
     opencv.brightness(brightness);
   }
@@ -280,7 +297,7 @@ void detectBlobs() {
   
   // Contours detected in this frame
   // Passing 'true' sorts them by descending area.
-  contours = opencv.findContours(true, true);
+  contours = opencv.findContours(false, true);
   
   newBlobContours = getBlobsFromContours(contours);
   
@@ -423,7 +440,9 @@ void displayBlobs() {
   
   for (Blob b : blobList) {
     strokeWeight(1);
-    b.display();
+    //b.display();
+    //b.drawBoundingBox();
+    b.drawContour();
   }
 }
 
@@ -468,7 +487,7 @@ void initControls() {
   
   // Set radio for channel
   cp5.addRadioButton("changeChannel")
-     .setPosition(20,35)
+     .setPosition(20,25)
      .setSize(10,10)
      .setItemsPerRow(2)
      .setSpacingColumn(50)
@@ -478,28 +497,35 @@ void initControls() {
      .activate(S)
      ;
   
+  // Toggle background subtraction
+  cp5.addToggle("toggleBackgroundSubtraction")
+     .setLabel("use background subtraction")
+     .setSize(10,10)
+     .setPosition(20,60)
+     ;  
+  
   // Slider for brightness
   cp5.addSlider("brightness")
      .setLabel("brightness")
-     .setPosition(20,80)
+     .setPosition(20,110)
      .setRange(-255,255)
      ;
      
   // Slider for contrast
   cp5.addSlider("contrast")
      .setLabel("contrast")
-     .setPosition(20,100)
+     .setPosition(20,125)
      .setRange(0.0, 6.0)
      ;
      
   // Slider for threshold
   cp5.addSlider("threshold")
      .setLabel("threshold")
-     .setPosition(20,150)
+     .setPosition(20,165)
      .setRange(0,255)
      ;
   
-  // Toggle to activae adaptive threshold
+  // Toggle to activate adaptive threshold
   /*cp5.addCheckBox("checkAdaptiveThreshold")
      .setSize(10,10)
      .setPosition(20,204)
@@ -510,27 +536,27 @@ void initControls() {
   cp5.addToggle("toggleAdaptiveThreshold")
      .setLabel("use adaptive threshold")
      .setSize(10,10)
-     .setPosition(20,175)
+     .setPosition(20,190)
      ;
      
   // Slider for adaptive threshold block size
   cp5.addSlider("thresholdBlockSize")
      .setLabel("a.t. block size")
-     .setPosition(20,210)
+     .setPosition(20,225)
      .setRange(1,700)
      ;
      
   // Slider for adaptive threshold constant
   cp5.addSlider("thresholdConstant")
      .setLabel("a.t. constant")
-     .setPosition(20,230)
+     .setPosition(20,240)
      .setRange(-100,100)
      ;
   
   // Dilate / Erode selection
   cp5.addCheckBox("toggleDilateErode")
      .setSize(10,10)
-     .setPosition(20,280)
+     .setPosition(20,290)
      .setItemsPerRow(2)
      .setSpacingColumn(50)
      .addItem("dilate", 0)
@@ -540,7 +566,7 @@ void initControls() {
   // Slider for blur size
   cp5.addSlider("blurSize")
      .setLabel("blur size")
-     .setPosition(20,300)
+     .setPosition(20,315)
      .setRange(1,20)
      ;
      
@@ -555,28 +581,28 @@ void initControls() {
   cp5.addToggle("toggleThresholdAfterBlur")
      .setLabel("use threshold after blur")
      .setSize(10,10)
-     .setPosition(20,325)
+     .setPosition(20,340)
      ;
      
   // Slider for threshold after blur
   cp5.addSlider("thresholdAfterBlur")
      .setLabel("threshold")
-     .setPosition(20,360)
+     .setPosition(20,375)
      .setRange(0,255)
      ;
      
   // Slider for minimal blob size
   cp5.addSlider("minBlobSize")
      .setLabel("min blob size")
-     .setPosition(20,410)
+     .setPosition(20,425)
      .setRange(0,60)
      ;
      
   // Slider for maximal blob size
   cp5.addSlider("maxBlobSize")
      .setLabel("max blob size")
-     .setPosition(20,430)
-     .setRange(100,800)
+     .setPosition(20,440)
+     .setRange(100, opencv.width + 10)
      ;
      
   // Store the default background color, we gonna need it later
@@ -592,8 +618,12 @@ void toggleDilateErode(float[] a) {
   dilate = (a[0] == 1);
   erode  = (a[1] == 1);
   
-  println("dilate: " + dilate);
-  println("erode: " + erode);
+  //println("dilate: " + dilate);
+  //println("erode: " + erode);
+}
+
+void toggleBackgroundSubtraction(boolean theFlag) {
+useBackgroundSubtraction = theFlag;
 }
 
 void toggleThresholdAfterBlur(boolean theFlag) {

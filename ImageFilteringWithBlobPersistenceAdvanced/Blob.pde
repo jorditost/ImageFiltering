@@ -54,6 +54,13 @@ class Blob {
     textSize(26);
     text(""+id, r.x+10, r.y+30);
   }
+  
+  void drawContour() {
+    float opacity = map(timer, 0, persistence, 0, 127);
+    noFill();
+    stroke(0,255,0);
+    contour.draw();
+  }
 
   // Give me a new contour for this blob (shape, points, location, size)
   // Oooh, it would be nice to lerp here!
