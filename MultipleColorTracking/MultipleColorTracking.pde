@@ -18,8 +18,16 @@ import gab.opencv.*;
 import processing.video.*;
 import java.awt.Rectangle;
 
-Capture video;
+// Image source
+//static int IMAGE_SRC = 0;
+static int CAPTURE   = 1;
+static int VIDEO     = 2;
+//static int KINECT    = 3;
+int source = VIDEO;
+
 OpenCV opencv;
+Capture cam;
+Movie video;
 PImage src;
 ArrayList<Contour> contours;
 
@@ -35,8 +43,21 @@ PImage[] outputs;
 int colorToChange = -1;
 
 void setup() {
-  video = new Capture(this, 640, 480);
-  opencv = new OpenCV(this, video.width, video.height);
+  
+  // CAPTURE
+  if (source == CAPTURE) {
+    cam = new Capture(this, 640, 480);
+    cam.start();
+    opencv = new OpenCV(this, cam.width, cam.height);
+    
+  // VIDEO
+  } else if (source == VIDEO) {
+    video = new Movie(this, "slime1.mov");
+    video.loop();
+    video.play();
+    opencv = new OpenCV(this, 640, 480); 
+  }
+  
   contours = new ArrayList<Contour>();
   
   size(opencv.width + opencv.width/4 + 30, opencv.height, P2D);
@@ -46,20 +67,30 @@ void setup() {
   hues = new int[maxColors];
   
   outputs = new PImage[maxColors];
-  
-  video.start();
 }
 
 void draw() {
   
   background(150);
   
-  if (video.available()) {
-    video.read();
+  // CAPTURE
+  if (source == CAPTURE && cam != null) {
+    if (cam.available()) {
+      cam.read();
+    }
+    
+    // <2> Load the new frame of our movie in to OpenCV
+    opencv.loadImage(cam);
+      
+  // MOVIE
+  } else if (source == VIDEO && video != null) {
+    if (video.available()) {
+      video.read();
+    }
+    
+    // <2> Load the new frame of our movie in to OpenCV
+    opencv.loadImage(video);
   }
-
-  // <2> Load the new frame of our movie in to OpenCV
-  opencv.loadImage(video);
   
   // Tell OpenCV to use color information
   opencv.useColor();
@@ -93,7 +124,7 @@ void draw() {
     text("press key [1-4] to select color", 10, 25);
   }
   
-  displayContoursBoundingBoxes();
+  displayContours(false);
 }
 
 //////////////////////
@@ -101,7 +132,10 @@ void draw() {
 //////////////////////
 
 void detectColors() {
-    
+  
+  // Clear old contours (no blob persistence)
+  contours.clear();
+  
   for (int i=0; i<hues.length; i++) {
     
     if (hues[i] <= 0) continue;
@@ -128,18 +162,22 @@ void detectColors() {
     
     // <6> Save the processed image for reference.
     outputs[i] = opencv.getSnapshot();
+    
+    // <7> Find contours in our range image.
+    //     Passing 'true' sorts them by descending area.
+    contours.addAll(opencv.findContours(true,true));
   }
   
-  // <7> Find contours in our range image.
+  /*// <7> Find contours in our range image.
   //     Passing 'true' sorts them by descending area.
   if (outputs[0] != null) {
     
     opencv.loadImage(outputs[0]);
     contours = opencv.findContours(true,true);
-  }
+  }*/
 }
 
-void displayContoursBoundingBoxes() {
+void displayContours(Boolean showBoundingBoxes) {
   
   for (int i=0; i<contours.size(); i++) {
     
@@ -149,10 +187,16 @@ void displayContoursBoundingBoxes() {
     if (r.width < 20 || r.height < 20)
       continue;
     
-    stroke(255, 0, 0);
-    fill(255, 0, 0, 150);
-    strokeWeight(2);
-    rect(r.x, r.y, r.width, r.height);
+    stroke(0,255,0);
+    noFill();
+    contour.draw();
+    
+    if (showBoundingBoxes) {
+      strokeWeight(1);
+      stroke(255, 0, 0);
+      fill(255, 0, 0, 150);
+      rect(r.x, r.y, r.width, r.height);
+    }
   }
 }
 
@@ -164,7 +208,7 @@ void mousePressed() {
     
   if (colorToChange > -1) {
     
-    color c = get(mouseX, mouseY);
+    color c = src.get(mouseX, mouseY); //get(mouseX, mouseY);
     println("r: " + red(c) + " g: " + green(c) + " b: " + blue(c));
    
     int hue = int(map(hue(c), 0, 255, 0, 180));
