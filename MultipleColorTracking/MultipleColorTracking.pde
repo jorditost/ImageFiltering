@@ -114,7 +114,7 @@ void draw() {
   }
   
   // Print text if new color expected
-  textSize(20);
+  textSize(16);
   stroke(255);
   fill(255);
   
@@ -123,6 +123,8 @@ void draw() {
   } else {
     text("press key [1-4] to select color", 10, 25);
   }
+  
+  text("press 'd' to reset all colors", 10, 50);
   
   displayContours(false);
 }
@@ -167,14 +169,6 @@ void detectColors() {
     //     Passing 'true' sorts them by descending area.
     contours.addAll(opencv.findContours(true,true));
   }
-  
-  /*// <7> Find contours in our range image.
-  //     Passing 'true' sorts them by descending area.
-  if (outputs[0] != null) {
-    
-    opencv.loadImage(outputs[0]);
-    contours = opencv.findContours(true,true);
-  }*/
 }
 
 void displayContours(Boolean showBoundingBoxes) {
@@ -233,6 +227,11 @@ void keyPressed() {
     
   } else if (key == '4') {
     colorToChange = 4;
+    
+  } else if (key == 'r' || key == 'R') {
+    colors = new int[maxColors];
+    hues = new int[maxColors];
+    outputs = new PImage[maxColors];
   }
 }
 
