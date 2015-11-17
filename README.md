@@ -24,7 +24,7 @@ Thresholding is one of the most important filtering operations.
 ![](ImageFiltering/screenshots/objects_basic_threshold.png)
 
 ### Using adaptive thresholding
-Adaptive thresholding is a more advanced option to filter your image. For environments with changing illumination or if you simply get a source image with shadows or irregular illumination, try better this. You can see an example in the next image, where the 
+Adaptive thresholding is a more advanced option to filter your image. For environments with changing illumination or if you simply get a source image with shadows or irregular illumination, try better this. You can see an example in the next image, where the
 
 ![](ImageFiltering/screenshots/touch_adaptive_threshold.png)
 
@@ -34,7 +34,7 @@ Just open the sketch and do some tests ;)
 
 Simple color tracking based on the hue channel.
 
-Code: [HSVColorTracking.pde](https://github.com/jorditost/ImageFiltering/tree/master/HSVColorTracking/HSVColorTracking.pde)
+Code: [HSVColorTracking.pde](https://github.com/jorditost/ImageFiltering/tree/master/SimpleColorTracking/SimpleColorTracking.pde)
 
 ![](HSVColorTracking/screenshots/hsv_color_tracking.png)
 
@@ -59,8 +59,9 @@ The same algorithm is also implemented in the `ImageFilteringWithBlobPersistence
 ![](ImageFilteringWithBlobPersistence/screenshots/blob_persistence.png)
 
 Code:
-- [ImageFilteringWithBlobPersistence.pde](https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringWithBlobPersistenceImageFilteringWithBlobPersistence.pde): main sketch
-- [Blob.pde](https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringWithBlobPersistence/Blob.pde): the Blob class
+- [ImageFilteringBlobPersist.pde](https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringBlobPersist/ImageFilteringBlobPersist.pde): main sketch
+- [ImageFilteringBlobPersistAdvanced.pde](https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringBlobPersistAdvanced/ImageFilteringBlobPersistAdvanced.pde): main sketch with more filtering options
+- [Blob.pde](https://github.com/jorditost/ImageFiltering/tree/master/ImageFilteringBlobPersist/Blob.pde): the Blob class
 
 For detailed information about this algorithm visit Daniel Shiffman's blog:
 http://shiffman.net/2011/04/26/opencv-matching-faces-over-time/
