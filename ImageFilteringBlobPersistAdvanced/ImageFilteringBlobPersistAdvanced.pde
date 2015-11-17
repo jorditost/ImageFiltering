@@ -31,7 +31,7 @@ static int IMAGE_SRC = 0;
 static int CAPTURE   = 1;
 static int VIDEO     = 2;
 static int KINECT    = 3;
-int source = VIDEO;
+int source = CAPTURE;
 
 public static final int GRAY = 0;
 public static final int S    = 1;
@@ -88,7 +88,7 @@ void setup() {
   // CAPTURE
   } else if (source == CAPTURE) {
     printCameras();
-    cam = new Capture(this, 640, 480, "USB 2.0 Camera");
+    cam = new Capture(this, 640, 480);
     cam.start();
     opencv = new OpenCV(this, cam.width, cam.height);
   
